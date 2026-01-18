@@ -1,0 +1,2872 @@
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[         0,          0]
+NotebookDataLength[    138149,       2871]
+NotebookOptionsPosition[    133717,       2795]
+NotebookOutlinePosition[    134112,       2811]
+CellTagsIndexPosition[    134069,       2808]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "Generates", " ", "eigenvalues", " ", "and", " ", "eigenvectors", " ", 
+    "for", " ", "each", " ", "value", " ", "of", " ", 
+    RowBox[{"g", "/", "kappa"}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"g", "=", "0.3"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[Kappa]", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Get", "[", "\"\</home/zz3250/Wolfram Mathematica/SG_SS_Kappa1G0p3\>\"", 
+     "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"PhiVSYKappa1G0p3", "=", 
+     RowBox[{"Interpolation", "[", 
+      RowBox[{"PhiVsYListKappa1G0p3", ",", 
+       RowBox[{"InterpolationOrder", "\[Rule]", "4"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Phi]ss", "[", "x_", "]"}], ":=", 
+     RowBox[{"PhiVSYKappa1G0p3", "[", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"\[Pi]", "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], "*", 
+         RowBox[{"Exp", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+            RowBox[{"(", 
+             RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}], 
+       "/", 
+       RowBox[{"(", 
+        RowBox[{"1", "+", 
+         RowBox[{"Exp", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+            RowBox[{"(", 
+             RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}]}], 
+      "]"}]}], ";", 
+    RowBox[{"data", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"x", ",", 
+         RowBox[{"\[Phi]ss", "[", "x", "]"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", 
+         RowBox[{"-", "100"}], ",", "100", ",", "0.001"}], "}"}]}], "]"}]}], 
+    ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[Phi]ssint", "=", 
+     RowBox[{"Interpolation", "[", "data", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"intermediatePhi", "[", "x_", "]"}], ":=", 
+     RowBox[{"2", "*", 
+      RowBox[{"Sqrt", "[", "\[Pi]", "]"}], "*", 
+      RowBox[{"\[Phi]ssint", "[", "x", "]"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"cosTerm", "[", "x_", "]"}], ":=", 
+     RowBox[{"Cos", "[", 
+      RowBox[{"intermediatePhi", "[", "x", "]"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"potentialhamiltonian", "[", "x_", "]"}], ":=", 
+     RowBox[{
+      RowBox[{"2", "*", "Pi", "*", "\[Kappa]", "*", 
+       RowBox[{"cosTerm", "[", "x", "]"}]}], " ", "+", 
+      RowBox[{"g", "^", "2"}]}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.9604534144215937`*^9, 3.9604534188641777`*^9}, {
+  3.9604535367490273`*^9, 3.960453580053648*^9}, {3.960454261692913*^9, 
+  3.96045430329535*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"d054d26e-48ce-4934-9c7b-912dbc36c5af"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"L", "=", "200"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"total", "=", "500"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"dx", "=", ".01"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"H1", "=", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{
+        RowBox[{"u", "''"}], "[", "x", "]"}]}], "+", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{"potentialhamiltonian", "[", "x", "]"}], "]"}], "*", 
+       RowBox[{"u", "[", "x", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"vals", ",", "fns"}], "}"}], "=", 
+     RowBox[{"NDEigensystem", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"H1", ",", 
+         RowBox[{"DirichletCondition", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"u", "[", "x", "]"}], "==", "0"}], ",", "True"}], "]"}]}],
+         "}"}], ",", 
+       RowBox[{"u", "[", "x", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", 
+         RowBox[{
+          RowBox[{"-", "L"}], "/", "2"}], ",", 
+         RowBox[{"L", "/", "2"}]}], "}"}], ",", "total", ",", 
+       RowBox[{"Method", "->", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"\"\<PDEDiscretization\>\"", "->", 
+           RowBox[{"{", 
+            RowBox[{"\"\<FiniteElement\>\"", ",", 
+             RowBox[{"\"\<MeshOptions\>\"", "->", 
+              RowBox[{"{", 
+               RowBox[{"\"\<MaxCellMeasure\>\"", "->", "dx"}], "}"}]}]}], 
+            "}"}]}], ",", "\"\<Arnoldi\>\"", ",", 
+          RowBox[{"\"\<MaxIterations\>\"", "->", "15000"}], ",", 
+          RowBox[{"\"\<BasisSize\>\"", "->", 
+           RowBox[{"total", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<Shift\>\"", "->", "3.2"}]}], "}"}]}]}], "]"}]}], ";"}],
+    "\[IndentingNewLine]", 
+   RowBox[{"Export", "[", 
+    RowBox[{"\"\<valsL200dxp01g0p3.wl\>\"", ",", "vals"}], "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"Export", "[", 
+    RowBox[{"\"\<vecsL200dxp01g0p3.wl\>\"", ",", "fns"}], "]"}]}]}]], "Input",\
+
+ CellChangeTimes->{{3.9604536070466633`*^9, 3.960453622053361*^9}, {
+  3.96045365482266*^9, 3.960453672171523*^9}, {3.9604539546261044`*^9, 
+  3.960454037357736*^9}, {3.96045431379983*^9, 3.96045432066499*^9}},
+ CellLabel->"In[10]:=",ExpressionUUID->"a1292c6f-9cae-4929-ae04-b93eacda89c3"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"g", "=", "0.5"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Kappa]", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Get", "[", "\"\</home/zz3250/Wolfram Mathematica/SG_SS_Kappa1G0p5\>\"", 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"PhiVSYKappa1G0p5", "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"PhiVsYListKappa1G0p5", ",", 
+     RowBox[{"InterpolationOrder", "\[Rule]", "4"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Phi]ss", "[", "x_", "]"}], ":=", 
+   RowBox[{"PhiVSYKappa1G0p5", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"\[Pi]", "^", 
+        RowBox[{"(", 
+         RowBox[{"1", "/", "2"}], ")"}]}], "*", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}], "/", 
+     
+     RowBox[{"(", 
+      RowBox[{"1", "+", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}]}], 
+    "]"}]}], ";", 
+  RowBox[{"data", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"\[Phi]ss", "[", "x", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"-", "100"}], ",", "100", ",", "0.001"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Phi]ssint", "=", 
+   RowBox[{"Interpolation", "[", "data", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"intermediatePhi", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", "*", 
+    RowBox[{"Sqrt", "[", "\[Pi]", "]"}], "*", 
+    RowBox[{"\[Phi]ssint", "[", "x", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"cosTerm", "[", "x_", "]"}], ":=", 
+   RowBox[{"Cos", "[", 
+    RowBox[{"intermediatePhi", "[", "x", "]"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"potentialhamiltonian", "[", "x_", "]"}], ":=", 
+    RowBox[{
+     RowBox[{"2", "*", "Pi", "*", "\[Kappa]", "*", 
+      RowBox[{"cosTerm", "[", "x", "]"}]}], " ", "+", 
+     RowBox[{"g", "^", "2"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"L", "=", "200"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"total", "=", "500"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dx", "=", ".01"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"H1", "=", 
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"u", "''"}], "[", "x", "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"Evaluate", "[", 
+      RowBox[{"potentialhamiltonian", "[", "x", "]"}], "]"}], "*", 
+     RowBox[{"u", "[", "x", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"vals", ",", "fns"}], "}"}], "=", 
+   RowBox[{"NDEigensystem", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"H1", ",", 
+       RowBox[{"DirichletCondition", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"u", "[", "x", "]"}], "==", "0"}], ",", "True"}], "]"}]}], 
+      "}"}], ",", 
+     RowBox[{"u", "[", "x", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{
+        RowBox[{"-", "L"}], "/", "2"}], ",", 
+       RowBox[{"L", "/", "2"}]}], "}"}], ",", "total", ",", 
+     RowBox[{"Method", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"\"\<PDEDiscretization\>\"", "->", 
+         RowBox[{"{", 
+          RowBox[{"\"\<FiniteElement\>\"", ",", 
+           RowBox[{"\"\<MeshOptions\>\"", "->", 
+            RowBox[{"{", 
+             RowBox[{"\"\<MaxCellMeasure\>\"", "->", "dx"}], "}"}]}]}], 
+          "}"}]}], ",", "\"\<Arnoldi\>\"", ",", 
+        RowBox[{"\"\<MaxIterations\>\"", "->", "15000"}], ",", 
+        RowBox[{"\"\<BasisSize\>\"", "->", 
+         RowBox[{"total", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Shift\>\"", "->", "3.2"}]}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<valsL200dxp01g0p5.wl\>\"", ",", "vals"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<vecsL200dxp01g0p5.wl\>\"", ",", "fns"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.9604543762001762`*^9, 3.960454430900106*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"a2c8b4ab-6daf-449a-a46c-126424b84552"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Eigensystem", "chnpdef", 
+   "\"Warning: there is a possibility that the second matrix \
+\\!\\(\\*TagBox[TemplateBox[List[RowBox[List[StyleBox[TagBox[\\\"SparseArray\\\
+\", \\\"SummaryHead\\\"], \\\"NonInterpretableSummary\\\"], \
+StyleBox[\\\"[\\\", \\\"NonInterpretableSummary\\\"], \
+DynamicModuleBox[List[Set[Typeset`open$$, False], Set[Typeset`embedState$$, \
+\\\"Ready\\\"]], \
+TemplateBox[List[TemplateBox[List[PaneSelectorBox[List[Rule[False, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxOpener\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, True]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"159991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"39999\\\", \\\",\\\", \\\"39999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]], Rule[True, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxCloser\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, False]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"159991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"39999\\\", \\\",\\\", \\\"39999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Default: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[\\\"0.`\\\", \\\"SummaryItem\\\"]]]], List[RowBox[List[TagBox[\\\"\\\\\
+\\\"Density: \\\\\\\"\\\", \\\"SummaryItemAnnotation\\\"], \
+\\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"0.0000999993749062457`\\\", \
+\\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Elements:\\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"\\\\\
+\\\"\\\\\\\"\\\", \\\"SummaryItem\\\"]]]], \
+List[TagBox[TagBox[GridBox[List[List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"1\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.002666666666671701`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"2\\\"]], \\\"}\\\"]], \\\"\\\
+\\[Rule]\\\", StyleBox[PaneBox[RowBox[List[\\\"-\\\", \
+\\\"0.00033333333333303023`\\\"]], Rule[ContentPadding, False], \
+Rule[FrameMargins, 0], Rule[StripOnInput, True], Rule[BaselinePosition, \
+Baseline], Rule[ImageSize, List[List[1, 300], Automatic]]], \
+Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"20000\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666704013`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"20001\\\"]], \\\"}\\\"]], \\\
+\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666660603`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], \
+List[ItemBox[\\\"\\\\\\\"\\\\[VerticalEllipsis]\\\\\\\"\\\", Rule[Alignment, \
+Center], Rule[StripOnInput, False]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]]]], Rule[DefaultBaseStyle, \
+\\\"Column\\\"], Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", \
+List[List[Automatic]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]]], \
+\\\"Column\\\"], \\\"SummaryItem\\\"]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]]], Dynamic[Typeset`open$$], Rule[ImageSize, Automatic]]], \
+\\\"SummaryPanel\\\"], \
+ButtonBox[DynamicBox[ToBoxes[If[Or[Less[$VersionNumber, 11.2`], \
+UnsameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"]], \
+Style[\\\"This object cannot be used as input.\\\", \\\"SummaryEmbed\\\"], \
+BoxForm`EmbedSummaryLabel[SparseArray, 2880640, \
+Dynamic[Typeset`embedState$$], Automatic]], StandardForm]], \
+RuleDelayed[ButtonFunction, \
+BoxForm`EmbedSummaryInterpretation[\\\"Choose\\\", SparseArray, 2880640, \
+9011899143057926657315966820873916780374095387766268242752, EvaluationBox[], \
+Dynamic[Typeset`embedState$$], StandardForm, \
+ElisionsDump`embedSummaryBoxes]], Rule[DefaultBaseStyle, \
+\\\"SummaryEmbedButton\\\"], Rule[ImageSize, Inherited], Rule[BaseStyle, \
+List[\\\"DialogStyle\\\"]], Rule[Enabled, \
+Dynamic[And[GreaterEqual[$VersionNumber, 11.2`], \
+SameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"], \
+SameQ[Typeset`embedState$$, \\\"Ready\\\"]]]], Rule[Appearance, Inherited], \
+Rule[Method, Inherited], Rule[Evaluator, Automatic]]], \\\"SummaryEmbedGrid\\\
+\"], RuleDelayed[DynamicModuleValues, List[]]], StyleBox[\\\"]\\\", \
+\\\"NonInterpretableSummary\\\"]]]], \\\"CopyTag\\\", Rule[DisplayFunction, \
+Function[Slot[1]]], Rule[InterpretationFunction, \
+Function[\\\"SparseArray[<159991>, {39999, 39999}]\\\"]]], False, \
+Rule[Selectable, False], Rule[Editable, False], Rule[SelectWithContents, \
+True], Rule[BoxID, \
+9011899143057926657315966820873916780374095387766268242752]]\\) in the first \
+argument is not positive definite, which is necessary for the Arnoldi method \
+to give accurate results.\"", 2, 14, 1, 26483591332112016492, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.960477556352352*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"af45a921-50b5-40d2-a04e-2842adf01de0"],
+
+Cell[BoxData["\<\"valsL200dxp01g0p5.wl\"\>"], "Output",
+ CellChangeTimes->{3.960477564296817*^9},
+ CellLabel->"Out[15]=",ExpressionUUID->"5fefd8bc-73f1-4851-a873-b97cc12a803c"],
+
+Cell[BoxData["\<\"vecsL200dxp01g0p5.wl\"\>"], "Output",
+ CellChangeTimes->{3.960477657982025*^9},
+ CellLabel->"Out[16]=",ExpressionUUID->"b6435d8d-54d5-4c7a-b2e2-3f3b691e3697"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"g", "=", "0.7"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Kappa]", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Get", "[", "\"\</home/zz3250/Wolfram Mathematica/SG_SS_Kappa1G0p7\>\"", 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"PhiVSYKappa1G0p7", "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"PhiVsYListKappa1G0p7", ",", 
+     RowBox[{"InterpolationOrder", "\[Rule]", "4"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Phi]ss", "[", "x_", "]"}], ":=", 
+   RowBox[{"PhiVSYKappa1G0p7", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"\[Pi]", "^", 
+        RowBox[{"(", 
+         RowBox[{"1", "/", "2"}], ")"}]}], "*", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}], "/", 
+     
+     RowBox[{"(", 
+      RowBox[{"1", "+", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}]}], 
+    "]"}]}], ";", 
+  RowBox[{"data", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"\[Phi]ss", "[", "x", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"-", "100"}], ",", "100", ",", "0.001"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Phi]ssint", "=", 
+   RowBox[{"Interpolation", "[", "data", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"intermediatePhi", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", "*", 
+    RowBox[{"Sqrt", "[", "\[Pi]", "]"}], "*", 
+    RowBox[{"\[Phi]ssint", "[", "x", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"cosTerm", "[", "x_", "]"}], ":=", 
+   RowBox[{"Cos", "[", 
+    RowBox[{"intermediatePhi", "[", "x", "]"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"potentialhamiltonian", "[", "x_", "]"}], ":=", 
+    RowBox[{
+     RowBox[{"2", "*", "Pi", "*", "\[Kappa]", "*", 
+      RowBox[{"cosTerm", "[", "x", "]"}]}], " ", "+", 
+     RowBox[{"g", "^", "2"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"L", "=", "200"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"total", "=", "500"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dx", "=", ".01"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"H1", "=", 
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"u", "''"}], "[", "x", "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"Evaluate", "[", 
+      RowBox[{"potentialhamiltonian", "[", "x", "]"}], "]"}], "*", 
+     RowBox[{"u", "[", "x", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"vals", ",", "fns"}], "}"}], "=", 
+   RowBox[{"NDEigensystem", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"H1", ",", 
+       RowBox[{"DirichletCondition", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"u", "[", "x", "]"}], "==", "0"}], ",", "True"}], "]"}]}], 
+      "}"}], ",", 
+     RowBox[{"u", "[", "x", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{
+        RowBox[{"-", "L"}], "/", "2"}], ",", 
+       RowBox[{"L", "/", "2"}]}], "}"}], ",", "total", ",", 
+     RowBox[{"Method", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"\"\<PDEDiscretization\>\"", "->", 
+         RowBox[{"{", 
+          RowBox[{"\"\<FiniteElement\>\"", ",", 
+           RowBox[{"\"\<MeshOptions\>\"", "->", 
+            RowBox[{"{", 
+             RowBox[{"\"\<MaxCellMeasure\>\"", "->", "dx"}], "}"}]}]}], 
+          "}"}]}], ",", "\"\<Arnoldi\>\"", ",", 
+        RowBox[{"\"\<MaxIterations\>\"", "->", "15000"}], ",", 
+        RowBox[{"\"\<BasisSize\>\"", "->", 
+         RowBox[{"total", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Shift\>\"", "->", "3.2"}]}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<valsL200dxp01g0p7.wl\>\"", ",", "vals"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<vecsL200dxp01g0p7.wl\>\"", ",", "fns"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.960454447184116*^9, 3.960454485150263*^9}},
+ CellLabel->"In[17]:=",ExpressionUUID->"9247b355-0987-4903-8c0a-baf1ec25ce2f"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Eigensystem", "chnpdef", 
+   "\"Warning: there is a possibility that the second matrix \
+\\!\\(\\*TagBox[TemplateBox[List[RowBox[List[StyleBox[TagBox[\\\"SparseArray\\\
+\", \\\"SummaryHead\\\"], \\\"NonInterpretableSummary\\\"], \
+StyleBox[\\\"[\\\", \\\"NonInterpretableSummary\\\"], \
+DynamicModuleBox[List[Set[Typeset`open$$, False], Set[Typeset`embedState$$, \
+\\\"Ready\\\"]], \
+TemplateBox[List[TemplateBox[List[PaneSelectorBox[List[Rule[False, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxOpener\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, True]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"159991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"39999\\\", \\\",\\\", \\\"39999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]], Rule[True, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxCloser\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, False]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"159991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"39999\\\", \\\",\\\", \\\"39999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Default: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[\\\"0.`\\\", \\\"SummaryItem\\\"]]]], List[RowBox[List[TagBox[\\\"\\\\\
+\\\"Density: \\\\\\\"\\\", \\\"SummaryItemAnnotation\\\"], \
+\\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"0.0000999993749062457`\\\", \
+\\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Elements:\\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"\\\\\
+\\\"\\\\\\\"\\\", \\\"SummaryItem\\\"]]]], \
+List[TagBox[TagBox[GridBox[List[List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"1\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.002666666666671701`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"2\\\"]], \\\"}\\\"]], \\\"\\\
+\\[Rule]\\\", StyleBox[PaneBox[RowBox[List[\\\"-\\\", \
+\\\"0.00033333333333303023`\\\"]], Rule[ContentPadding, False], \
+Rule[FrameMargins, 0], Rule[StripOnInput, True], Rule[BaselinePosition, \
+Baseline], Rule[ImageSize, List[List[1, 300], Automatic]]], \
+Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"20000\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666704013`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"20001\\\"]], \\\"}\\\"]], \\\
+\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666660603`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], \
+List[ItemBox[\\\"\\\\\\\"\\\\[VerticalEllipsis]\\\\\\\"\\\", Rule[Alignment, \
+Center], Rule[StripOnInput, False]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]]]], Rule[DefaultBaseStyle, \
+\\\"Column\\\"], Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", \
+List[List[Automatic]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]]], \
+\\\"Column\\\"], \\\"SummaryItem\\\"]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]]], Dynamic[Typeset`open$$], Rule[ImageSize, Automatic]]], \
+\\\"SummaryPanel\\\"], \
+ButtonBox[DynamicBox[ToBoxes[If[Or[Less[$VersionNumber, 11.2`], \
+UnsameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"]], \
+Style[\\\"This object cannot be used as input.\\\", \\\"SummaryEmbed\\\"], \
+BoxForm`EmbedSummaryLabel[SparseArray, 2880640, \
+Dynamic[Typeset`embedState$$], Automatic]], StandardForm]], \
+RuleDelayed[ButtonFunction, \
+BoxForm`EmbedSummaryInterpretation[\\\"Choose\\\", SparseArray, 2880640, \
+9011899143057926657315966820873916780392542131840588448032, EvaluationBox[], \
+Dynamic[Typeset`embedState$$], StandardForm, \
+ElisionsDump`embedSummaryBoxes]], Rule[DefaultBaseStyle, \
+\\\"SummaryEmbedButton\\\"], Rule[ImageSize, Inherited], Rule[BaseStyle, \
+List[\\\"DialogStyle\\\"]], Rule[Enabled, \
+Dynamic[And[GreaterEqual[$VersionNumber, 11.2`], \
+SameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"], \
+SameQ[Typeset`embedState$$, \\\"Ready\\\"]]]], Rule[Appearance, Inherited], \
+Rule[Method, Inherited], Rule[Evaluator, Automatic]]], \\\"SummaryEmbedGrid\\\
+\"], RuleDelayed[DynamicModuleValues, List[]]], StyleBox[\\\"]\\\", \
+\\\"NonInterpretableSummary\\\"]]]], \\\"CopyTag\\\", Rule[DisplayFunction, \
+Function[Slot[1]]], Rule[InterpretationFunction, \
+Function[\\\"SparseArray[<159991>, {39999, 39999}]\\\"]]], False, \
+Rule[Selectable, False], Rule[Editable, False], Rule[SelectWithContents, \
+True], Rule[BoxID, \
+9011899143057926657315966820873916780392542131840588448032]]\\) in the first \
+argument is not positive definite, which is necessary for the Arnoldi method \
+to give accurate results.\"", 2, 30, 2, 26483591332112016492, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.960487582071402*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"4c11b2e3-ca9e-49e5-8942-8b1562da78c9"],
+
+Cell[BoxData["\<\"valsL200dxp01g0p7.wl\"\>"], "Output",
+ CellChangeTimes->{3.960487588041977*^9},
+ CellLabel->"Out[31]=",ExpressionUUID->"29536ca5-28ac-40b1-aaa4-1e54383da1c7"],
+
+Cell[BoxData["\<\"vecsL200dxp01g0p7.wl\"\>"], "Output",
+ CellChangeTimes->{3.9604876820479927`*^9},
+ CellLabel->"Out[32]=",ExpressionUUID->"33898e0e-df9b-46c5-8acb-cc779d1254d3"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"g", "=", "0.9"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Kappa]", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Get", "[", 
+   "\"\</scratch/network/zz3250/Wolfram Mathematica/SG_SS_Kappa1G0p9\>\"", 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"PhiVSYKappa1G0p9", "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"PhiVsYListKappa1G0p9", ",", 
+     RowBox[{"InterpolationOrder", "\[Rule]", "4"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Phi]ss", "[", "x_", "]"}], ":=", 
+   RowBox[{"PhiVSYKappa1G0p9", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"\[Pi]", "^", 
+        RowBox[{"(", 
+         RowBox[{"1", "/", "2"}], ")"}]}], "*", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}], "/", 
+     
+     RowBox[{"(", 
+      RowBox[{"1", "+", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}]}], 
+    "]"}]}], ";", 
+  RowBox[{"data", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"\[Phi]ss", "[", "x", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"-", "150"}], ",", "150", ",", "0.001"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Phi]ssint", "=", 
+   RowBox[{"Interpolation", "[", "data", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"intermediatePhi", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", "*", 
+    RowBox[{"Sqrt", "[", "\[Pi]", "]"}], "*", 
+    RowBox[{"\[Phi]ssint", "[", "x", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"cosTerm", "[", "x_", "]"}], ":=", 
+   RowBox[{"Cos", "[", 
+    RowBox[{"intermediatePhi", "[", "x", "]"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"potentialhamiltonian", "[", "x_", "]"}], ":=", 
+    RowBox[{
+     RowBox[{"2", "*", "Pi", "*", "\[Kappa]", "*", 
+      RowBox[{"cosTerm", "[", "x", "]"}]}], " ", "+", 
+     RowBox[{"g", "^", "2"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"L", "=", "300"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"total", "=", "500"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dx", "=", ".01"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"H1", "=", 
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"u", "''"}], "[", "x", "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"Evaluate", "[", 
+      RowBox[{"potentialhamiltonian", "[", "x", "]"}], "]"}], "*", 
+     RowBox[{"u", "[", "x", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"vals", ",", "fns"}], "}"}], "=", 
+   RowBox[{"NDEigensystem", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"H1", ",", 
+       RowBox[{"DirichletCondition", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"u", "[", "x", "]"}], "==", "0"}], ",", "True"}], "]"}]}], 
+      "}"}], ",", 
+     RowBox[{"u", "[", "x", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{
+        RowBox[{"-", "L"}], "/", "2"}], ",", 
+       RowBox[{"L", "/", "2"}]}], "}"}], ",", "total", ",", 
+     RowBox[{"Method", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"\"\<PDEDiscretization\>\"", "->", 
+         RowBox[{"{", 
+          RowBox[{"\"\<FiniteElement\>\"", ",", 
+           RowBox[{"\"\<MeshOptions\>\"", "->", 
+            RowBox[{"{", 
+             RowBox[{"\"\<MaxCellMeasure\>\"", "->", "dx"}], "}"}]}]}], 
+          "}"}]}], ",", "\"\<Arnoldi\>\"", ",", 
+        RowBox[{"\"\<MaxIterations\>\"", "->", "15000"}], ",", 
+        RowBox[{"\"\<BasisSize\>\"", "->", 
+         RowBox[{"total", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Shift\>\"", "->", "3.2"}]}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<valsL300dxp01g0p9.wl\>\"", ",", "vals"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<vecsL300dxp01g0p9.wl\>\"", ",", "fns"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.960454503945838*^9, 3.960454564968142*^9}, {
+  3.960901512002263*^9, 3.960901530963375*^9}, {3.960901983828274*^9, 
+  3.960902002410657*^9}},
+ CellLabel->"In[17]:=",ExpressionUUID->"7767e906-0ae1-4fe2-8dc7-74c5a6172517"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Eigensystem", "chnpdef", 
+   "\"Warning: there is a possibility that the second matrix \
+\\!\\(\\*TagBox[TemplateBox[List[RowBox[List[StyleBox[TagBox[\\\"SparseArray\\\
+\", \\\"SummaryHead\\\"], \\\"NonInterpretableSummary\\\"], \
+StyleBox[\\\"[\\\", \\\"NonInterpretableSummary\\\"], \
+DynamicModuleBox[List[Set[Typeset`open$$, False], Set[Typeset`embedState$$, \
+\\\"Ready\\\"]], \
+TemplateBox[List[TemplateBox[List[PaneSelectorBox[List[Rule[False, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxOpener\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, True]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]], Rule[True, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxCloser\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, False]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Default: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[\\\"0.`\\\", \\\"SummaryItem\\\"]]]], List[RowBox[List[TagBox[\\\"\\\\\
+\\\"Density: \\\\\\\"\\\", \\\"SummaryItemAnnotation\\\"], \
+\\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"0.00006666638886111027`\\\", \
+\\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Elements:\\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"\\\\\
+\\\"\\\\\\\"\\\", \\\"SummaryItem\\\"]]]], \
+List[TagBox[TagBox[GridBox[List[List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"1\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0026666666666643624`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"2\\\"]], \\\"}\\\"]], \\\"\\\
+\\[Rule]\\\", StyleBox[PaneBox[RowBox[List[\\\"-\\\", \
+\\\"0.0003333333333339776`\\\"]], Rule[ContentPadding, False], \
+Rule[FrameMargins, 0], Rule[StripOnInput, True], Rule[BaselinePosition, \
+Baseline], Rule[ImageSize, List[List[1, 300], Automatic]]], \
+Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"30000\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666660603`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"30001\\\"]], \\\"}\\\"]], \\\
+\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666655089`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], \
+List[ItemBox[\\\"\\\\\\\"\\\\[VerticalEllipsis]\\\\\\\"\\\", Rule[Alignment, \
+Center], Rule[StripOnInput, False]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]]]], Rule[DefaultBaseStyle, \
+\\\"Column\\\"], Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", \
+List[List[Automatic]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]]], \
+\\\"Column\\\"], \\\"SummaryItem\\\"]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]]], Dynamic[Typeset`open$$], Rule[ImageSize, Automatic]]], \
+\\\"SummaryPanel\\\"], \
+ButtonBox[DynamicBox[ToBoxes[If[Or[Less[$VersionNumber, 11.2`], \
+UnsameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"]], \
+Style[\\\"This object cannot be used as input.\\\", \\\"SummaryEmbed\\\"], \
+BoxForm`EmbedSummaryLabel[SparseArray, 4320640, \
+Dynamic[Typeset`embedState$$], Automatic]], StandardForm]], \
+RuleDelayed[ButtonFunction, \
+BoxForm`EmbedSummaryInterpretation[\\\"Choose\\\", SparseArray, 4320640, \
+9012862389178153755598691791324223530679536574006924338976, EvaluationBox[], \
+Dynamic[Typeset`embedState$$], StandardForm, \
+ElisionsDump`embedSummaryBoxes]], Rule[DefaultBaseStyle, \
+\\\"SummaryEmbedButton\\\"], Rule[ImageSize, Inherited], Rule[BaseStyle, \
+List[\\\"DialogStyle\\\"]], Rule[Enabled, \
+Dynamic[And[GreaterEqual[$VersionNumber, 11.2`], \
+SameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"], \
+SameQ[Typeset`embedState$$, \\\"Ready\\\"]]]], Rule[Appearance, Inherited], \
+Rule[Method, Inherited], Rule[Evaluator, Automatic]]], \\\"SummaryEmbedGrid\\\
+\"], RuleDelayed[DynamicModuleValues, List[]]], StyleBox[\\\"]\\\", \
+\\\"NonInterpretableSummary\\\"]]]], \\\"CopyTag\\\", Rule[DisplayFunction, \
+Function[Slot[1]]], Rule[InterpretationFunction, \
+Function[\\\"SparseArray[<239991>, {59999, 59999}]\\\"]]], False, \
+Rule[Selectable, False], Rule[Editable, False], Rule[SelectWithContents, \
+True], Rule[BoxID, \
+9012862389178153755598691791324223530679536574006924338976]]\\) in the first \
+argument is not positive definite, which is necessary for the Arnoldi method \
+to give accurate results.\"", 2, 30, 12, 26486422058043962592, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.960497525498004*^9, 3.960901537325642*^9, 
+  3.960915967576858*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"63899a88-4fd4-4f1c-89df-17e2c4dcf339"],
+
+Cell[BoxData["\<\"valsL300dxp01g0p9.wl\"\>"], "Output",
+ CellChangeTimes->{3.960497531439513*^9, 3.9609016349058037`*^9, 
+  3.960915977720752*^9},
+ CellLabel->"Out[31]=",ExpressionUUID->"0727332b-9006-4514-8589-a5fcf4b0c619"],
+
+Cell[BoxData["\<\"vecsL300dxp01g0p9.wl\"\>"], "Output",
+ CellChangeTimes->{3.960497531439513*^9, 3.9609016349058037`*^9, 
+  3.960916131684823*^9},
+ CellLabel->"Out[32]=",ExpressionUUID->"22752964-2c25-4b72-91d6-b75079858cf8"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"g", "=", "1.1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Kappa]", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Get", "[", 
+   "\"\</scratch/network/zz3250/Wolfram Mathematica/SG_SS_Kappa1G1p1\>\"", 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"PhiVSYKappa1G1p1", "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"PhiVsYListKappa1G1p1", ",", 
+     RowBox[{"InterpolationOrder", "\[Rule]", "4"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Phi]ss", "[", "x_", "]"}], ":=", 
+   RowBox[{"PhiVSYKappa1G1p1", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"\[Pi]", "^", 
+        RowBox[{"(", 
+         RowBox[{"1", "/", "2"}], ")"}]}], "*", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}], "/", 
+     
+     RowBox[{"(", 
+      RowBox[{"1", "+", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}]}], 
+    "]"}]}], ";", 
+  RowBox[{"data", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"\[Phi]ss", "[", "x", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"-", "150"}], ",", "150", ",", "0.001"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Phi]ssint", "=", 
+   RowBox[{"Interpolation", "[", "data", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"intermediatePhi", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", "*", 
+    RowBox[{"Sqrt", "[", "\[Pi]", "]"}], "*", 
+    RowBox[{"\[Phi]ssint", "[", "x", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"cosTerm", "[", "x_", "]"}], ":=", 
+   RowBox[{"Cos", "[", 
+    RowBox[{"intermediatePhi", "[", "x", "]"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"potentialhamiltonian", "[", "x_", "]"}], ":=", 
+    RowBox[{
+     RowBox[{"2", "*", "Pi", "*", "\[Kappa]", "*", 
+      RowBox[{"cosTerm", "[", "x", "]"}]}], " ", "+", 
+     RowBox[{"g", "^", "2"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"L", "=", "300"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"total", "=", "500"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dx", "=", ".01"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"H1", "=", 
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"u", "''"}], "[", "x", "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"Evaluate", "[", 
+      RowBox[{"potentialhamiltonian", "[", "x", "]"}], "]"}], "*", 
+     RowBox[{"u", "[", "x", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"vals", ",", "fns"}], "}"}], "=", 
+   RowBox[{"NDEigensystem", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"H1", ",", 
+       RowBox[{"DirichletCondition", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"u", "[", "x", "]"}], "==", "0"}], ",", "True"}], "]"}]}], 
+      "}"}], ",", 
+     RowBox[{"u", "[", "x", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{
+        RowBox[{"-", "L"}], "/", "2"}], ",", 
+       RowBox[{"L", "/", "2"}]}], "}"}], ",", "total", ",", 
+     RowBox[{"Method", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"\"\<PDEDiscretization\>\"", "->", 
+         RowBox[{"{", 
+          RowBox[{"\"\<FiniteElement\>\"", ",", 
+           RowBox[{"\"\<MeshOptions\>\"", "->", 
+            RowBox[{"{", 
+             RowBox[{"\"\<MaxCellMeasure\>\"", "->", "dx"}], "}"}]}]}], 
+          "}"}]}], ",", "\"\<Arnoldi\>\"", ",", 
+        RowBox[{"\"\<MaxIterations\>\"", "->", "15000"}], ",", 
+        RowBox[{"\"\<BasisSize\>\"", "->", 
+         RowBox[{"total", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Shift\>\"", "->", "3.2"}]}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<valsL300dxp01g1p1.wl\>\"", ",", "vals"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<vecsL300dxp01g1p1.wl\>\"", ",", "fns"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.960454581299559*^9, 3.960454611907298*^9}, {
+  3.960903184827146*^9, 3.960903229154804*^9}},
+ CellLabel->"In[33]:=",ExpressionUUID->"f3ae494a-c57c-4016-b177-9510fdecbfeb"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Eigensystem", "chnpdef", 
+   "\"Warning: there is a possibility that the second matrix \
+\\!\\(\\*TagBox[TemplateBox[List[RowBox[List[StyleBox[TagBox[\\\"SparseArray\\\
+\", \\\"SummaryHead\\\"], \\\"NonInterpretableSummary\\\"], \
+StyleBox[\\\"[\\\", \\\"NonInterpretableSummary\\\"], \
+DynamicModuleBox[List[Set[Typeset`open$$, False], Set[Typeset`embedState$$, \
+\\\"Ready\\\"]], \
+TemplateBox[List[TemplateBox[List[PaneSelectorBox[List[Rule[False, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxOpener\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, True]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]], Rule[True, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxCloser\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, False]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Default: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[\\\"0.`\\\", \\\"SummaryItem\\\"]]]], List[RowBox[List[TagBox[\\\"\\\\\
+\\\"Density: \\\\\\\"\\\", \\\"SummaryItemAnnotation\\\"], \
+\\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"0.00006666638886111027`\\\", \
+\\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Elements:\\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"\\\\\
+\\\"\\\\\\\"\\\", \\\"SummaryItem\\\"]]]], \
+List[TagBox[TagBox[GridBox[List[List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"1\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0026666666666643624`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"2\\\"]], \\\"}\\\"]], \\\"\\\
+\\[Rule]\\\", StyleBox[PaneBox[RowBox[List[\\\"-\\\", \
+\\\"0.0003333333333339776`\\\"]], Rule[ContentPadding, False], \
+Rule[FrameMargins, 0], Rule[StripOnInput, True], Rule[BaselinePosition, \
+Baseline], Rule[ImageSize, List[List[1, 300], Automatic]]], \
+Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"30000\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666660603`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"30001\\\"]], \\\"}\\\"]], \\\
+\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666655089`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], \
+List[ItemBox[\\\"\\\\\\\"\\\\[VerticalEllipsis]\\\\\\\"\\\", Rule[Alignment, \
+Center], Rule[StripOnInput, False]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]]]], Rule[DefaultBaseStyle, \
+\\\"Column\\\"], Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", \
+List[List[Automatic]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]]], \
+\\\"Column\\\"], \\\"SummaryItem\\\"]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]]], Dynamic[Typeset`open$$], Rule[ImageSize, Automatic]]], \
+\\\"SummaryPanel\\\"], \
+ButtonBox[DynamicBox[ToBoxes[If[Or[Less[$VersionNumber, 11.2`], \
+UnsameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"]], \
+Style[\\\"This object cannot be used as input.\\\", \\\"SummaryEmbed\\\"], \
+BoxForm`EmbedSummaryLabel[SparseArray, 4320640, \
+Dynamic[Typeset`embedState$$], Automatic]], StandardForm]], \
+RuleDelayed[ButtonFunction, \
+BoxForm`EmbedSummaryInterpretation[\\\"Choose\\\", SparseArray, 4320640, \
+9012862389178153755598691791324223530697983318080442914624, EvaluationBox[], \
+Dynamic[Typeset`embedState$$], StandardForm, \
+ElisionsDump`embedSummaryBoxes]], Rule[DefaultBaseStyle, \
+\\\"SummaryEmbedButton\\\"], Rule[ImageSize, Inherited], Rule[BaseStyle, \
+List[\\\"DialogStyle\\\"]], Rule[Enabled, \
+Dynamic[And[GreaterEqual[$VersionNumber, 11.2`], \
+SameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"], \
+SameQ[Typeset`embedState$$, \\\"Ready\\\"]]]], Rule[Appearance, Inherited], \
+Rule[Method, Inherited], Rule[Evaluator, Automatic]]], \\\"SummaryEmbedGrid\\\
+\"], RuleDelayed[DynamicModuleValues, List[]]], StyleBox[\\\"]\\\", \
+\\\"NonInterpretableSummary\\\"]]]], \\\"CopyTag\\\", Rule[DisplayFunction, \
+Function[Slot[1]]], Rule[InterpretationFunction, \
+Function[\\\"SparseArray[<239991>, {59999, 59999}]\\\"]]], False, \
+Rule[Selectable, False], Rule[Editable, False], Rule[SelectWithContents, \
+True], Rule[BoxID, \
+9012862389178153755598691791324223530697983318080442914624]]\\) in the first \
+argument is not positive definite, which is necessary for the Arnoldi method \
+to give accurate results.\"", 2, 46, 13, 26486422058043962592, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.960506795122764*^9, 3.960930191998407*^9},
+ CellLabel->
+  "During evaluation of \
+In[33]:=",ExpressionUUID->"976e1f73-723f-4215-acd7-dd95e9199133"],
+
+Cell[BoxData["\<\"valsL300dxp01g1p1.wl\"\>"], "Output",
+ CellChangeTimes->{3.960506800783585*^9, 3.960930200485384*^9},
+ CellLabel->"Out[47]=",ExpressionUUID->"41aef6f2-315b-4d1e-adba-2af69e23a7ee"],
+
+Cell[BoxData["\<\"vecsL300dxp01g1p1.wl\"\>"], "Output",
+ CellChangeTimes->{3.960506800783585*^9, 3.960930338744879*^9},
+ CellLabel->"Out[48]=",ExpressionUUID->"4ffb0436-5ba8-4083-a348-e227e647d794"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"g", "=", "1.3"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Kappa]", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Get", "[", 
+   "\"\</scratch/network/zz3250/Wolfram Mathematica/SG_SS_Kappa1G1p3\>\"", 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"PhiVSYKappa1G1p3", "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"PhiVsYListKappa1G1p3", ",", 
+     RowBox[{"InterpolationOrder", "\[Rule]", "4"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Phi]ss", "[", "x_", "]"}], ":=", 
+   RowBox[{"PhiVSYKappa1G1p3", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"\[Pi]", "^", 
+        RowBox[{"(", 
+         RowBox[{"1", "/", "2"}], ")"}]}], "*", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}], "/", 
+     
+     RowBox[{"(", 
+      RowBox[{"1", "+", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}]}], 
+    "]"}]}], ";", 
+  RowBox[{"data", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"\[Phi]ss", "[", "x", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"-", "150"}], ",", "150", ",", "0.001"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Phi]ssint", "=", 
+   RowBox[{"Interpolation", "[", "data", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"intermediatePhi", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", "*", 
+    RowBox[{"Sqrt", "[", "\[Pi]", "]"}], "*", 
+    RowBox[{"\[Phi]ssint", "[", "x", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"cosTerm", "[", "x_", "]"}], ":=", 
+   RowBox[{"Cos", "[", 
+    RowBox[{"intermediatePhi", "[", "x", "]"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"potentialhamiltonian", "[", "x_", "]"}], ":=", 
+    RowBox[{
+     RowBox[{"2", "*", "Pi", "*", "\[Kappa]", "*", 
+      RowBox[{"cosTerm", "[", "x", "]"}]}], " ", "+", 
+     RowBox[{"g", "^", "2"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"L", "=", "300"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"total", "=", "500"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dx", "=", ".01"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"H1", "=", 
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"u", "''"}], "[", "x", "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"Evaluate", "[", 
+      RowBox[{"potentialhamiltonian", "[", "x", "]"}], "]"}], "*", 
+     RowBox[{"u", "[", "x", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"vals", ",", "fns"}], "}"}], "=", 
+   RowBox[{"NDEigensystem", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"H1", ",", 
+       RowBox[{"DirichletCondition", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"u", "[", "x", "]"}], "==", "0"}], ",", "True"}], "]"}]}], 
+      "}"}], ",", 
+     RowBox[{"u", "[", "x", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{
+        RowBox[{"-", "L"}], "/", "2"}], ",", 
+       RowBox[{"L", "/", "2"}]}], "}"}], ",", "total", ",", 
+     RowBox[{"Method", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"\"\<PDEDiscretization\>\"", "->", 
+         RowBox[{"{", 
+          RowBox[{"\"\<FiniteElement\>\"", ",", 
+           RowBox[{"\"\<MeshOptions\>\"", "->", 
+            RowBox[{"{", 
+             RowBox[{"\"\<MaxCellMeasure\>\"", "->", "dx"}], "}"}]}]}], 
+          "}"}]}], ",", "\"\<Arnoldi\>\"", ",", 
+        RowBox[{"\"\<MaxIterations\>\"", "->", "15000"}], ",", 
+        RowBox[{"\"\<BasisSize\>\"", "->", 
+         RowBox[{"total", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Shift\>\"", "->", "3.2"}]}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<valsL300dxp01g1p3.wl\>\"", ",", "vals"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<vecsL300dxp01g1p3.wl\>\"", ",", "fns"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.960454621030254*^9, 3.960454650618265*^9}, {
+  3.960903239986446*^9, 3.9609032738747683`*^9}},
+ CellLabel->"In[49]:=",ExpressionUUID->"f22f85d2-d115-430d-af34-27c32859374a"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Eigensystem", "chnpdef", 
+   "\"Warning: there is a possibility that the second matrix \
+\\!\\(\\*TagBox[TemplateBox[List[RowBox[List[StyleBox[TagBox[\\\"SparseArray\\\
+\", \\\"SummaryHead\\\"], \\\"NonInterpretableSummary\\\"], \
+StyleBox[\\\"[\\\", \\\"NonInterpretableSummary\\\"], \
+DynamicModuleBox[List[Set[Typeset`open$$, False], Set[Typeset`embedState$$, \
+\\\"Ready\\\"]], \
+TemplateBox[List[TemplateBox[List[PaneSelectorBox[List[Rule[False, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxOpener\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, True]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]], Rule[True, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxCloser\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, False]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Default: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[\\\"0.`\\\", \\\"SummaryItem\\\"]]]], List[RowBox[List[TagBox[\\\"\\\\\
+\\\"Density: \\\\\\\"\\\", \\\"SummaryItemAnnotation\\\"], \
+\\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"0.00006666638886111027`\\\", \
+\\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Elements:\\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"\\\\\
+\\\"\\\\\\\"\\\", \\\"SummaryItem\\\"]]]], \
+List[TagBox[TagBox[GridBox[List[List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"1\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0026666666666643624`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"2\\\"]], \\\"}\\\"]], \\\"\\\
+\\[Rule]\\\", StyleBox[PaneBox[RowBox[List[\\\"-\\\", \
+\\\"0.0003333333333339776`\\\"]], Rule[ContentPadding, False], \
+Rule[FrameMargins, 0], Rule[StripOnInput, True], Rule[BaselinePosition, \
+Baseline], Rule[ImageSize, List[List[1, 300], Automatic]]], \
+Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"30000\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666660603`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"30001\\\"]], \\\"}\\\"]], \\\
+\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666655089`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], \
+List[ItemBox[\\\"\\\\\\\"\\\\[VerticalEllipsis]\\\\\\\"\\\", Rule[Alignment, \
+Center], Rule[StripOnInput, False]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]]]], Rule[DefaultBaseStyle, \
+\\\"Column\\\"], Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", \
+List[List[Automatic]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]]], \
+\\\"Column\\\"], \\\"SummaryItem\\\"]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]]], Dynamic[Typeset`open$$], Rule[ImageSize, Automatic]]], \
+\\\"SummaryPanel\\\"], \
+ButtonBox[DynamicBox[ToBoxes[If[Or[Less[$VersionNumber, 11.2`], \
+UnsameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"]], \
+Style[\\\"This object cannot be used as input.\\\", \\\"SummaryEmbed\\\"], \
+BoxForm`EmbedSummaryLabel[SparseArray, 4320640, \
+Dynamic[Typeset`embedState$$], Automatic]], StandardForm]], \
+RuleDelayed[ButtonFunction, \
+BoxForm`EmbedSummaryInterpretation[\\\"Choose\\\", SparseArray, 4320640, \
+9012862389178153755598691791324223530716430062154128388832, EvaluationBox[], \
+Dynamic[Typeset`embedState$$], StandardForm, \
+ElisionsDump`embedSummaryBoxes]], Rule[DefaultBaseStyle, \
+\\\"SummaryEmbedButton\\\"], Rule[ImageSize, Inherited], Rule[BaseStyle, \
+List[\\\"DialogStyle\\\"]], Rule[Enabled, \
+Dynamic[And[GreaterEqual[$VersionNumber, 11.2`], \
+SameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"], \
+SameQ[Typeset`embedState$$, \\\"Ready\\\"]]]], Rule[Appearance, Inherited], \
+Rule[Method, Inherited], Rule[Evaluator, Automatic]]], \\\"SummaryEmbedGrid\\\
+\"], RuleDelayed[DynamicModuleValues, List[]]], StyleBox[\\\"]\\\", \
+\\\"NonInterpretableSummary\\\"]]]], \\\"CopyTag\\\", Rule[DisplayFunction, \
+Function[Slot[1]]], Rule[InterpretationFunction, \
+Function[\\\"SparseArray[<239991>, {59999, 59999}]\\\"]]], False, \
+Rule[Selectable, False], Rule[Editable, False], Rule[SelectWithContents, \
+True], Rule[BoxID, \
+9012862389178153755598691791324223530716430062154128388832]]\\) in the first \
+argument is not positive definite, which is necessary for the Arnoldi method \
+to give accurate results.\"", 2, 62, 14, 26486422058043962592, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.9605159954566307`*^9, 3.960943332126975*^9},
+ CellLabel->
+  "During evaluation of \
+In[49]:=",ExpressionUUID->"dfcb4199-4656-4f04-b05c-d5448749be9c"],
+
+Cell[BoxData["\<\"valsL300dxp01g1p3.wl\"\>"], "Output",
+ CellChangeTimes->{3.960516003086658*^9, 3.96094334045333*^9},
+ CellLabel->"Out[63]=",ExpressionUUID->"7afd1efd-0441-4713-825c-8fc2d7fc7a9d"],
+
+Cell[BoxData["\<\"vecsL300dxp01g1p3.wl\"\>"], "Output",
+ CellChangeTimes->{3.960516003086658*^9, 3.9609434781569366`*^9},
+ CellLabel->"Out[64]=",ExpressionUUID->"16d2e915-4373-4156-b8ef-dc614dd1cfc4"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"g", "=", "1.5"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Kappa]", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Get", "[", 
+   "\"\</scratch/network/zz3250/Wolfram Mathematica/SG_SS_Kappa1G1p5\>\"", 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"PhiVSYKappa1G1p5", "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"PhiVsYListKappa1G1p5", ",", 
+     RowBox[{"InterpolationOrder", "\[Rule]", "4"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Phi]ss", "[", "x_", "]"}], ":=", 
+   RowBox[{"PhiVSYKappa1G1p5", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"\[Pi]", "^", 
+        RowBox[{"(", 
+         RowBox[{"1", "/", "2"}], ")"}]}], "*", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}], "/", 
+     
+     RowBox[{"(", 
+      RowBox[{"1", "+", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}]}], 
+    "]"}]}], ";", 
+  RowBox[{"data", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"\[Phi]ss", "[", "x", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"-", "150"}], ",", "150", ",", "0.001"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Phi]ssint", "=", 
+   RowBox[{"Interpolation", "[", "data", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"intermediatePhi", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", "*", 
+    RowBox[{"Sqrt", "[", "\[Pi]", "]"}], "*", 
+    RowBox[{"\[Phi]ssint", "[", "x", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"cosTerm", "[", "x_", "]"}], ":=", 
+   RowBox[{"Cos", "[", 
+    RowBox[{"intermediatePhi", "[", "x", "]"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"potentialhamiltonian", "[", "x_", "]"}], ":=", 
+    RowBox[{
+     RowBox[{"2", "*", "Pi", "*", "\[Kappa]", "*", 
+      RowBox[{"cosTerm", "[", "x", "]"}]}], " ", "+", 
+     RowBox[{"g", "^", "2"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"L", "=", "300"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"total", "=", "800"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dx", "=", ".01"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"H1", "=", 
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"u", "''"}], "[", "x", "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"Evaluate", "[", 
+      RowBox[{"potentialhamiltonian", "[", "x", "]"}], "]"}], "*", 
+     RowBox[{"u", "[", "x", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"vals", ",", "fns"}], "}"}], "=", 
+   RowBox[{"NDEigensystem", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"H1", ",", 
+       RowBox[{"DirichletCondition", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"u", "[", "x", "]"}], "==", "0"}], ",", "True"}], "]"}]}], 
+      "}"}], ",", 
+     RowBox[{"u", "[", "x", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{
+        RowBox[{"-", "L"}], "/", "2"}], ",", 
+       RowBox[{"L", "/", "2"}]}], "}"}], ",", "total", ",", 
+     RowBox[{"Method", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"\"\<PDEDiscretization\>\"", "->", 
+         RowBox[{"{", 
+          RowBox[{"\"\<FiniteElement\>\"", ",", 
+           RowBox[{"\"\<MeshOptions\>\"", "->", 
+            RowBox[{"{", 
+             RowBox[{"\"\<MaxCellMeasure\>\"", "->", "dx"}], "}"}]}]}], 
+          "}"}]}], ",", "\"\<Arnoldi\>\"", ",", 
+        RowBox[{"\"\<MaxIterations\>\"", "->", "15000"}], ",", 
+        RowBox[{"\"\<BasisSize\>\"", "->", 
+         RowBox[{"total", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Shift\>\"", "->", "3.2"}]}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<valsL300dxp01g1p5_total800.wl\>\"", ",", "vals"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<vecsL300dxp01g1p5_total800.wl\>\"", ",", "fns"}], 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.960454659565785*^9, 3.960454699565422*^9}, {
+  3.96090328526787*^9, 3.960903312625495*^9}, {3.9610165248758717`*^9, 
+  3.9610165563632317`*^9}, {3.961064167765571*^9, 3.96106418844016*^9}},
+ CellLabel->"In[17]:=",ExpressionUUID->"3a3b47be-190c-45aa-9d94-c2f16ccadd6f"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Eigensystem", "maxit2", 
+   "\"Warning: maximum number of iterations, \\!\\(\\*RowBox[{\\\"15000\\\"}]\
+\\), has been reached by the Arnoldi algorithm without convergence to the \
+specified tolerance, but the current best computed value has been returned. \
+You can use method options with Method -> {Arnoldi, opts} to increase the \
+size of basis vectors, the maximum number of iterations, reduce the \
+tolerance, or use an estimate as a shift, any of which may help.\"", 2, 30, 1,
+    33269877588221148241, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.961096455238689*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"283651a6-4484-4fe4-a123-279f8de04992"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Eigensystem", "chnpdef", 
+   "\"Warning: there is a possibility that the second matrix \
+\\!\\(\\*TagBox[TemplateBox[List[RowBox[List[StyleBox[TagBox[\\\"SparseArray\\\
+\", \\\"SummaryHead\\\"], \\\"NonInterpretableSummary\\\"], \
+StyleBox[\\\"[\\\", \\\"NonInterpretableSummary\\\"], \
+DynamicModuleBox[List[Set[Typeset`open$$, False], Set[Typeset`embedState$$, \
+\\\"Ready\\\"]], \
+TemplateBox[List[TemplateBox[List[PaneSelectorBox[List[Rule[False, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxOpener\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, True]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]], Rule[True, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxCloser\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, False]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Default: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[\\\"0.`\\\", \\\"SummaryItem\\\"]]]], List[RowBox[List[TagBox[\\\"\\\\\
+\\\"Density: \\\\\\\"\\\", \\\"SummaryItemAnnotation\\\"], \
+\\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"0.00006666638886111027`\\\", \
+\\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Elements:\\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"\\\\\
+\\\"\\\\\\\"\\\", \\\"SummaryItem\\\"]]]], \
+List[TagBox[TagBox[GridBox[List[List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"1\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0026666666666643624`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"2\\\"]], \\\"}\\\"]], \\\"\\\
+\\[Rule]\\\", StyleBox[PaneBox[RowBox[List[\\\"-\\\", \
+\\\"0.0003333333333339776`\\\"]], Rule[ContentPadding, False], \
+Rule[FrameMargins, 0], Rule[StripOnInput, True], Rule[BaselinePosition, \
+Baseline], Rule[ImageSize, List[List[1, 300], Automatic]]], \
+Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"30000\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666660603`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"30001\\\"]], \\\"}\\\"]], \\\
+\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666655089`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], \
+List[ItemBox[\\\"\\\\\\\"\\\\[VerticalEllipsis]\\\\\\\"\\\", Rule[Alignment, \
+Center], Rule[StripOnInput, False]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]]]], Rule[DefaultBaseStyle, \
+\\\"Column\\\"], Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", \
+List[List[Automatic]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]]], \
+\\\"Column\\\"], \\\"SummaryItem\\\"]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]]], Dynamic[Typeset`open$$], Rule[ImageSize, Automatic]]], \
+\\\"SummaryPanel\\\"], \
+ButtonBox[DynamicBox[ToBoxes[If[Or[Less[$VersionNumber, 11.2`], \
+UnsameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"]], \
+Style[\\\"This object cannot be used as input.\\\", \\\"SummaryEmbed\\\"], \
+BoxForm`EmbedSummaryLabel[SparseArray, 4320640, \
+Dynamic[Typeset`embedState$$], Automatic]], StandardForm]], \
+RuleDelayed[ButtonFunction, \
+BoxForm`EmbedSummaryInterpretation[\\\"Choose\\\", SparseArray, 4320640, \
+11321152692889776000395165837906651519906867199974754611616, EvaluationBox[], \
+Dynamic[Typeset`embedState$$], StandardForm, \
+ElisionsDump`embedSummaryBoxes]], Rule[DefaultBaseStyle, \
+\\\"SummaryEmbedButton\\\"], Rule[ImageSize, Inherited], Rule[BaseStyle, \
+List[\\\"DialogStyle\\\"]], Rule[Enabled, \
+Dynamic[And[GreaterEqual[$VersionNumber, 11.2`], \
+SameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"], \
+SameQ[Typeset`embedState$$, \\\"Ready\\\"]]]], Rule[Appearance, Inherited], \
+Rule[Method, Inherited], Rule[Evaluator, Automatic]]], \\\"SummaryEmbedGrid\\\
+\"], RuleDelayed[DynamicModuleValues, List[]]], StyleBox[\\\"]\\\", \
+\\\"NonInterpretableSummary\\\"]]]], \\\"CopyTag\\\", Rule[DisplayFunction, \
+Function[Slot[1]]], Rule[InterpretationFunction, \
+Function[\\\"SparseArray[<239991>, {59999, 59999}]\\\"]]], False, \
+Rule[Selectable, False], Rule[Editable, False], Rule[SelectWithContents, \
+True], Rule[BoxID, \
+11321152692889776000395165837906651519906867199974754611616]]\\) in the first \
+argument is not positive definite, which is necessary for the Arnoldi method \
+to give accurate results.\"", 2, 30, 2, 33269877588221148241, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.961096459831411*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"fcfa55ee-7b9c-4aca-a4dd-7d072b78e66b"],
+
+Cell[BoxData["\<\"valsL300dxp01g1p5_total800.wl\"\>"], "Output",
+ CellChangeTimes->{3.960956748356458*^9, 3.9610641820752153`*^9, 
+  3.96109647303619*^9},
+ CellLabel->"Out[31]=",ExpressionUUID->"ad3d9603-8d4d-42a8-8b13-553b95ccbe4f"],
+
+Cell[BoxData["\<\"vecsL300dxp01g1p5_total800.wl\"\>"], "Output",
+ CellChangeTimes->{3.960956748356458*^9, 3.9610641820752153`*^9, 
+  3.9610966955386066`*^9},
+ CellLabel->"Out[32]=",ExpressionUUID->"836c612c-377b-40fa-923b-8847117368d9"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"g", "=", "1.7"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Kappa]", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Get", "[", 
+   "\"\</scratch/network/zz3250/Wolfram Mathematica/SG_SS_Kappa1G1p7\>\"", 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"PhiVSYKappa1G1p7", "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"PhiVsYListKappa1G1p7", ",", 
+     RowBox[{"InterpolationOrder", "\[Rule]", "4"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Phi]ss", "[", "x_", "]"}], ":=", 
+   RowBox[{"PhiVSYKappa1G1p7", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"\[Pi]", "^", 
+        RowBox[{"(", 
+         RowBox[{"1", "/", "2"}], ")"}]}], "*", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}], "/", 
+     
+     RowBox[{"(", 
+      RowBox[{"1", "+", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}]}], 
+    "]"}]}], ";", 
+  RowBox[{"data", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"\[Phi]ss", "[", "x", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"-", "150"}], ",", "150", ",", "0.001"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Phi]ssint", "=", 
+   RowBox[{"Interpolation", "[", "data", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"intermediatePhi", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", "*", 
+    RowBox[{"Sqrt", "[", "\[Pi]", "]"}], "*", 
+    RowBox[{"\[Phi]ssint", "[", "x", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"cosTerm", "[", "x_", "]"}], ":=", 
+   RowBox[{"Cos", "[", 
+    RowBox[{"intermediatePhi", "[", "x", "]"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"potentialhamiltonian", "[", "x_", "]"}], ":=", 
+    RowBox[{
+     RowBox[{"2", "*", "Pi", "*", "\[Kappa]", "*", 
+      RowBox[{"cosTerm", "[", "x", "]"}]}], " ", "+", 
+     RowBox[{"g", "^", "2"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"L", "=", "300"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"total", "=", "500"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dx", "=", ".01"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"H1", "=", 
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"u", "''"}], "[", "x", "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"Evaluate", "[", 
+      RowBox[{"potentialhamiltonian", "[", "x", "]"}], "]"}], "*", 
+     RowBox[{"u", "[", "x", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"vals", ",", "fns"}], "}"}], "=", 
+   RowBox[{"NDEigensystem", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"H1", ",", 
+       RowBox[{"DirichletCondition", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"u", "[", "x", "]"}], "==", "0"}], ",", "True"}], "]"}]}], 
+      "}"}], ",", 
+     RowBox[{"u", "[", "x", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{
+        RowBox[{"-", "L"}], "/", "2"}], ",", 
+       RowBox[{"L", "/", "2"}]}], "}"}], ",", "total", ",", 
+     RowBox[{"Method", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"\"\<PDEDiscretization\>\"", "->", 
+         RowBox[{"{", 
+          RowBox[{"\"\<FiniteElement\>\"", ",", 
+           RowBox[{"\"\<MeshOptions\>\"", "->", 
+            RowBox[{"{", 
+             RowBox[{"\"\<MaxCellMeasure\>\"", "->", "dx"}], "}"}]}]}], 
+          "}"}]}], ",", "\"\<Arnoldi\>\"", ",", 
+        RowBox[{"\"\<MaxIterations\>\"", "->", "15000"}], ",", 
+        RowBox[{"\"\<BasisSize\>\"", "->", 
+         RowBox[{"total", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Shift\>\"", "->", "3.2"}]}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<valsL300dxp01g1p7.wl\>\"", ",", "vals"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<vecsL300dxp01g1p7.wl\>\"", ",", "fns"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.960454711047064*^9, 3.960454766641765*^9}, 
+   3.960539720040041*^9, {3.960539803016879*^9, 3.960539803027274*^9}, {
+   3.9609033205951233`*^9, 3.960903369643927*^9}},
+ CellLabel->"In[81]:=",ExpressionUUID->"d7fc597f-2d05-441e-a8f8-15392dffe285"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Eigensystem", "chnpdef", 
+   "\"Warning: there is a possibility that the second matrix \
+\\!\\(\\*TagBox[TemplateBox[List[RowBox[List[StyleBox[TagBox[\\\"SparseArray\\\
+\", \\\"SummaryHead\\\"], \\\"NonInterpretableSummary\\\"], \
+StyleBox[\\\"[\\\", \\\"NonInterpretableSummary\\\"], \
+DynamicModuleBox[List[Set[Typeset`open$$, False], Set[Typeset`embedState$$, \
+\\\"Ready\\\"]], \
+TemplateBox[List[TemplateBox[List[PaneSelectorBox[List[Rule[False, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxOpener\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, True]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]], Rule[True, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxCloser\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, False]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Default: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[\\\"0.`\\\", \\\"SummaryItem\\\"]]]], List[RowBox[List[TagBox[\\\"\\\\\
+\\\"Density: \\\\\\\"\\\", \\\"SummaryItemAnnotation\\\"], \
+\\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"0.00006666638886111027`\\\", \
+\\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Elements:\\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"\\\\\
+\\\"\\\\\\\"\\\", \\\"SummaryItem\\\"]]]], \
+List[TagBox[TagBox[GridBox[List[List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"1\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0026666666666643624`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"2\\\"]], \\\"}\\\"]], \\\"\\\
+\\[Rule]\\\", StyleBox[PaneBox[RowBox[List[\\\"-\\\", \
+\\\"0.0003333333333339776`\\\"]], Rule[ContentPadding, False], \
+Rule[FrameMargins, 0], Rule[StripOnInput, True], Rule[BaselinePosition, \
+Baseline], Rule[ImageSize, List[List[1, 300], Automatic]]], \
+Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"30000\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666660603`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"30001\\\"]], \\\"}\\\"]], \\\
+\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666655089`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], \
+List[ItemBox[\\\"\\\\\\\"\\\\[VerticalEllipsis]\\\\\\\"\\\", Rule[Alignment, \
+Center], Rule[StripOnInput, False]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]]]], Rule[DefaultBaseStyle, \
+\\\"Column\\\"], Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", \
+List[List[Automatic]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]]], \
+\\\"Column\\\"], \\\"SummaryItem\\\"]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]]], Dynamic[Typeset`open$$], Rule[ImageSize, Automatic]]], \
+\\\"SummaryPanel\\\"], \
+ButtonBox[DynamicBox[ToBoxes[If[Or[Less[$VersionNumber, 11.2`], \
+UnsameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"]], \
+Style[\\\"This object cannot be used as input.\\\", \\\"SummaryEmbed\\\"], \
+BoxForm`EmbedSummaryLabel[SparseArray, 4320640, \
+Dynamic[Typeset`embedState$$], Automatic]], StandardForm]], \
+RuleDelayed[ButtonFunction, \
+BoxForm`EmbedSummaryInterpretation[\\\"Choose\\\", SparseArray, 4320640, \
+9012862389178153755598691791324223530753323550300907519264, EvaluationBox[], \
+Dynamic[Typeset`embedState$$], StandardForm, \
+ElisionsDump`embedSummaryBoxes]], Rule[DefaultBaseStyle, \
+\\\"SummaryEmbedButton\\\"], Rule[ImageSize, Inherited], Rule[BaseStyle, \
+List[\\\"DialogStyle\\\"]], Rule[Enabled, \
+Dynamic[And[GreaterEqual[$VersionNumber, 11.2`], \
+SameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"], \
+SameQ[Typeset`embedState$$, \\\"Ready\\\"]]]], Rule[Appearance, Inherited], \
+Rule[Method, Inherited], Rule[Evaluator, Automatic]]], \\\"SummaryEmbedGrid\\\
+\"], RuleDelayed[DynamicModuleValues, List[]]], StyleBox[\\\"]\\\", \
+\\\"NonInterpretableSummary\\\"]]]], \\\"CopyTag\\\", Rule[DisplayFunction, \
+Function[Slot[1]]], Rule[InterpretationFunction, \
+Function[\\\"SparseArray[<239991>, {59999, 59999}]\\\"]]], False, \
+Rule[Selectable, False], Rule[Editable, False], Rule[SelectWithContents, \
+True], Rule[BoxID, \
+9012862389178153755598691791324223530753323550300907519264]]\\) in the first \
+argument is not positive definite, which is necessary for the Arnoldi method \
+to give accurate results.\"", 2, 94, 16, 26486422058043962592, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.960525000272382*^9, 3.960970522122484*^9},
+ CellLabel->
+  "During evaluation of \
+In[81]:=",ExpressionUUID->"b0ff9074-86d3-4ac0-8b93-b72fbf8df864"],
+
+Cell[BoxData["\<\"valsL300dxp01g1p7.wl\"\>"], "Output",
+ CellChangeTimes->{3.960525005980505*^9, 3.960970530852893*^9},
+ CellLabel->"Out[95]=",ExpressionUUID->"0d95e37e-519d-4868-a00c-077b015ce83d"],
+
+Cell[BoxData["\<\"vecsL300dxp01g1p7.wl\"\>"], "Output",
+ CellChangeTimes->{3.960525005980505*^9, 3.9609706823442907`*^9},
+ CellLabel->"Out[96]=",ExpressionUUID->"cac18bc2-55dc-4d3a-a7cf-d55f9741f3cb"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"g", "=", "1.9"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Kappa]", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Get", "[", 
+   "\"\</scratch/network/zz3250/Wolfram Mathematica/SG_SS_Kappa1G1p9\>\"", 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"PhiVSYKappa1G1p9", "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"PhiVsYListKappa1G1p9", ",", 
+     RowBox[{"InterpolationOrder", "\[Rule]", "4"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Phi]ss", "[", "x_", "]"}], ":=", 
+   RowBox[{"PhiVSYKappa1G1p9", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"\[Pi]", "^", 
+        RowBox[{"(", 
+         RowBox[{"1", "/", "2"}], ")"}]}], "*", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}], "/", 
+     
+     RowBox[{"(", 
+      RowBox[{"1", "+", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}]}], 
+    "]"}]}], ";", 
+  RowBox[{"data", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"\[Phi]ss", "[", "x", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"-", "150"}], ",", "150", ",", "0.001"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Phi]ssint", "=", 
+   RowBox[{"Interpolation", "[", "data", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"intermediatePhi", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", "*", 
+    RowBox[{"Sqrt", "[", "\[Pi]", "]"}], "*", 
+    RowBox[{"\[Phi]ssint", "[", "x", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"cosTerm", "[", "x_", "]"}], ":=", 
+   RowBox[{"Cos", "[", 
+    RowBox[{"intermediatePhi", "[", "x", "]"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"potentialhamiltonian", "[", "x_", "]"}], ":=", 
+    RowBox[{
+     RowBox[{"2", "*", "Pi", "*", "\[Kappa]", "*", 
+      RowBox[{"cosTerm", "[", "x", "]"}]}], " ", "+", 
+     RowBox[{"g", "^", "2"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"L", "=", "300"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"total", "=", "500"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dx", "=", ".01"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"H1", "=", 
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"u", "''"}], "[", "x", "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"Evaluate", "[", 
+      RowBox[{"potentialhamiltonian", "[", "x", "]"}], "]"}], "*", 
+     RowBox[{"u", "[", "x", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"vals", ",", "fns"}], "}"}], "=", 
+   RowBox[{"NDEigensystem", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"H1", ",", 
+       RowBox[{"DirichletCondition", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"u", "[", "x", "]"}], "==", "0"}], ",", "True"}], "]"}]}], 
+      "}"}], ",", 
+     RowBox[{"u", "[", "x", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{
+        RowBox[{"-", "L"}], "/", "2"}], ",", 
+       RowBox[{"L", "/", "2"}]}], "}"}], ",", "total", ",", 
+     RowBox[{"Method", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"\"\<PDEDiscretization\>\"", "->", 
+         RowBox[{"{", 
+          RowBox[{"\"\<FiniteElement\>\"", ",", 
+           RowBox[{"\"\<MeshOptions\>\"", "->", 
+            RowBox[{"{", 
+             RowBox[{"\"\<MaxCellMeasure\>\"", "->", "dx"}], "}"}]}]}], 
+          "}"}]}], ",", "\"\<Arnoldi\>\"", ",", 
+        RowBox[{"\"\<MaxIterations\>\"", "->", "15000"}], ",", 
+        RowBox[{"\"\<BasisSize\>\"", "->", 
+         RowBox[{"total", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Shift\>\"", "->", "3.2"}]}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<valsL300dxp01g1p9.wl\>\"", ",", "vals"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<vecsL300dxp01g1p9.wl\>\"", ",", "fns"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.960454804718177*^9, 3.960454835644399*^9}, {
+   3.960539821696704*^9, 3.960539841568737*^9}, 3.960903378034305*^9, {
+   3.960903408044139*^9, 3.960903423390766*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"04062bec-790a-433e-b5b5-1ea0e0e9804f"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Eigensystem", "chnpdef", 
+   "\"Warning: there is a possibility that the second matrix \
+\\!\\(\\*TagBox[TemplateBox[List[RowBox[List[StyleBox[TagBox[\\\"SparseArray\\\
+\", \\\"SummaryHead\\\"], \\\"NonInterpretableSummary\\\"], \
+StyleBox[\\\"[\\\", \\\"NonInterpretableSummary\\\"], \
+DynamicModuleBox[List[Set[Typeset`open$$, False], Set[Typeset`embedState$$, \
+\\\"Ready\\\"]], \
+TemplateBox[List[TemplateBox[List[PaneSelectorBox[List[Rule[False, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxOpener\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, True]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]], Rule[True, \
+GridBox[List[List[PaneBox[ButtonBox[DynamicBox[FEPrivate`FrontEndResource[\\\"\
+FEBitmaps\\\", \\\"SummaryBoxCloser\\\"]], RuleDelayed[ButtonFunction, \
+Set[Typeset`open$$, False]], Rule[Appearance, None], Rule[BaseStyle, List[]], \
+Rule[Evaluator, Automatic], Rule[Method, \\\"Preemptive\\\"]], \
+Rule[Alignment, List[Center, Center]], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]]], \
+GraphicsBox[RasterBox[SparseArray[Automatic, List[10, 10], 0.93`, List[1, \
+List[List[0, 1, 1, 4, 4, 5, 6, 6, 8, 10, 13], List[List[4], List[6], List[7], \
+List[10], List[5], List[9], List[3], List[8], List[5], List[7], List[2], \
+List[3], List[7]]], List[0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, 0.`, \
+0.`, 0.`, 0.`]]], List[List[0, 0], List[10, 10]], List[0, 1]], Rule[Frame, \
+False], Rule[Axes, False], Rule[AspectRatio, 1], Rule[ImageSize, \
+Dynamic[List[Automatic, Times[3.5`, \
+Times[CurrentValue[\\\"FontCapHeight\\\"], \
+Power[AbsoluteCurrentValue[Magnification], -1]]]]]], Rule[Frame, True], \
+Rule[FrameTicks, None], Rule[FrameStyle, Directive[Opacity[0.5`], \
+Thickness[Tiny], RGBColor[0.368417`, 0.506779`, 0.709798`]]], \
+Rule[FrameLabel, List[None, None]], Rule[FrameTicks, List[List[None, None], \
+List[None, None]]]], \
+GridBox[List[List[RowBox[List[TagBox[\\\"\\\\\\\"Specified elements: \\\\\\\"\
+\\\", \\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\
+\"239991\\\", \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Dimensions: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[RowBox[List[\\\"{\\\", RowBox[List[\\\"59999\\\", \\\",\\\", \\\"59999\
+\\\"]], \\\"}\\\"]], \\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Default: \\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", \
+TagBox[\\\"0.`\\\", \\\"SummaryItem\\\"]]]], List[RowBox[List[TagBox[\\\"\\\\\
+\\\"Density: \\\\\\\"\\\", \\\"SummaryItemAnnotation\\\"], \
+\\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"0.00006666638886111027`\\\", \
+\\\"SummaryItem\\\"]]]], \
+List[RowBox[List[TagBox[\\\"\\\\\\\"Elements:\\\\\\\"\\\", \
+\\\"SummaryItemAnnotation\\\"], \\\"\\\\[InvisibleSpace]\\\", TagBox[\\\"\\\\\
+\\\"\\\\\\\"\\\", \\\"SummaryItem\\\"]]]], \
+List[TagBox[TagBox[GridBox[List[List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"1\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0026666666666643624`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"2\\\"]], \\\"}\\\"]], \\\"\\\
+\\[Rule]\\\", StyleBox[PaneBox[RowBox[List[\\\"-\\\", \
+\\\"0.0003333333333339776`\\\"]], Rule[ContentPadding, False], \
+Rule[FrameMargins, 0], Rule[StripOnInput, True], Rule[BaselinePosition, \
+Baseline], Rule[ImageSize, List[List[1, 300], Automatic]]], \
+Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"1\\\", \\\",\\\", \\\"30000\\\"]], \\\"}\\\"]], \
+\\\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666660603`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], List[RowBox[List[RowBox[List[\
+\\\"{\\\", RowBox[List[\\\"1\\\", \\\",\\\", \\\"30001\\\"]], \\\"}\\\"]], \\\
+\"\\\\[Rule]\\\", StyleBox[PaneBox[\\\"0.0006666666666655089`\\\", \
+Rule[ContentPadding, False], Rule[FrameMargins, 0], Rule[StripOnInput, True], \
+Rule[BaselinePosition, Baseline], Rule[ImageSize, List[List[1, 300], \
+Automatic]]], Rule[LineBreakWithin, False]]]]], \
+List[ItemBox[\\\"\\\\\\\"\\\\[VerticalEllipsis]\\\\\\\"\\\", Rule[Alignment, \
+Center], Rule[StripOnInput, False]]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]]]], Rule[DefaultBaseStyle, \
+\\\"Column\\\"], Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", \
+List[List[Automatic]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]]], \
+\\\"Column\\\"], \\\"SummaryItem\\\"]]], Rule[GridBoxAlignment, \
+List[Rule[\\\"Columns\\\", List[List[Left]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[AutoDelete, False], Rule[GridBoxItemSize, \
+List[Rule[\\\"Columns\\\", List[List[Automatic]]], Rule[\\\"Rows\\\", \
+List[List[Automatic]]]]], Rule[GridBoxSpacings, List[Rule[\\\"Columns\\\", \
+List[List[2]]], Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaseStyle, \
+List[Rule[ShowStringCharacters, False], Rule[NumberMarks, False], \
+Rule[PrintPrecision, 3], Rule[ShowSyntaxStyles, False]]]]]], \
+Rule[GridBoxAlignment, List[Rule[\\\"Columns\\\", List[List[Left]]], \
+Rule[\\\"Rows\\\", List[List[Top]]]]], Rule[AutoDelete, False], \
+Rule[GridBoxItemSize, List[Rule[\\\"Columns\\\", List[List[Automatic]]], \
+Rule[\\\"Rows\\\", List[List[Automatic]]]]], Rule[BaselinePosition, List[1, \
+1]]]]], Dynamic[Typeset`open$$], Rule[ImageSize, Automatic]]], \
+\\\"SummaryPanel\\\"], \
+ButtonBox[DynamicBox[ToBoxes[If[Or[Less[$VersionNumber, 11.2`], \
+UnsameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"]], \
+Style[\\\"This object cannot be used as input.\\\", \\\"SummaryEmbed\\\"], \
+BoxForm`EmbedSummaryLabel[SparseArray, 4320640, \
+Dynamic[Typeset`embedState$$], Automatic]], StandardForm]], \
+RuleDelayed[ButtonFunction, \
+BoxForm`EmbedSummaryInterpretation[\\\"Choose\\\", SparseArray, 4320640, \
+9013053109949724091680721920765618034249515152043227557952, EvaluationBox[], \
+Dynamic[Typeset`embedState$$], StandardForm, \
+ElisionsDump`embedSummaryBoxes]], Rule[DefaultBaseStyle, \
+\\\"SummaryEmbedButton\\\"], Rule[ImageSize, Inherited], Rule[BaseStyle, \
+List[\\\"DialogStyle\\\"]], Rule[Enabled, \
+Dynamic[And[GreaterEqual[$VersionNumber, 11.2`], \
+SameQ[CurrentValue[\\\"RunningEvaluator\\\"], \\\"Local\\\"], \
+SameQ[Typeset`embedState$$, \\\"Ready\\\"]]]], Rule[Appearance, Inherited], \
+Rule[Method, Inherited], Rule[Evaluator, Automatic]]], \\\"SummaryEmbedGrid\\\
+\"], RuleDelayed[DynamicModuleValues, List[]]], StyleBox[\\\"]\\\", \
+\\\"NonInterpretableSummary\\\"]]]], \\\"CopyTag\\\", Rule[DisplayFunction, \
+Function[Slot[1]]], Rule[InterpretationFunction, \
+Function[\\\"SparseArray[<239991>, {59999, 59999}]\\\"]]], False, \
+Rule[Selectable, False], Rule[Editable, False], Rule[SelectWithContents, \
+True], Rule[BoxID, \
+9013053109949724091680721920765618034249515152043227557952]]\\) in the first \
+argument is not positive definite, which is necessary for the Arnoldi method \
+to give accurate results.\"", 2, 14, 1, 26486982536017876087, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.960999729081736*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"97e37c8f-dfa0-4f39-84a4-d42c4b8cf10f"],
+
+Cell[BoxData["\<\"valsL300dxp01g1p9.wl\"\>"], "Output",
+ CellChangeTimes->{3.960534208688569*^9, 3.960984890568696*^9, 
+  3.960999738232445*^9},
+ CellLabel->"Out[15]=",ExpressionUUID->"100c0dbf-06e4-4b78-8946-dd13e95bea25"],
+
+Cell[BoxData["\<\"vecsL300dxp01g1p9.wl\"\>"], "Output",
+ CellChangeTimes->{3.960534208688569*^9, 3.960984890568696*^9, 
+  3.960999875162343*^9},
+ CellLabel->"Out[16]=",ExpressionUUID->"2490b5b8-80bc-4b30-afba-cf987b611a75"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"g", "=", "2.1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Kappa]", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "Get", "[", 
+   "\"\</scratch/network/zz3250/Wolfram Mathematica/SG_SS_Kappa1G2p1\>\"", 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"PhiVSYKappa1G2p1", "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{"PhiVsYListKappa1G2p1", ",", 
+     RowBox[{"InterpolationOrder", "\[Rule]", "4"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Phi]ss", "[", "x_", "]"}], ":=", 
+   RowBox[{"PhiVSYKappa1G2p1", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"\[Pi]", "^", 
+        RowBox[{"(", 
+         RowBox[{"1", "/", "2"}], ")"}]}], "*", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}], "/", 
+     
+     RowBox[{"(", 
+      RowBox[{"1", "+", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Pi]", "*", "\[Kappa]"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"1", "/", "2"}], ")"}]}], " ", "x"}], "]"}]}], ")"}]}], 
+    "]"}]}], ";", 
+  RowBox[{"data", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"\[Phi]ss", "[", "x", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"-", "150"}], ",", "150", ",", "0.001"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Phi]ssint", "=", 
+   RowBox[{"Interpolation", "[", "data", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"intermediatePhi", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", "*", 
+    RowBox[{"Sqrt", "[", "\[Pi]", "]"}], "*", 
+    RowBox[{"\[Phi]ssint", "[", "x", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"cosTerm", "[", "x_", "]"}], ":=", 
+   RowBox[{"Cos", "[", 
+    RowBox[{"intermediatePhi", "[", "x", "]"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"potentialhamiltonian", "[", "x_", "]"}], ":=", 
+    RowBox[{
+     RowBox[{"2", "*", "Pi", "*", "\[Kappa]", "*", 
+      RowBox[{"cosTerm", "[", "x", "]"}]}], " ", "+", 
+     RowBox[{"g", "^", "2"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"L", "=", "300"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"total", "=", "500"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dx", "=", ".01"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"H1", "=", 
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"u", "''"}], "[", "x", "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"Evaluate", "[", 
+      RowBox[{"potentialhamiltonian", "[", "x", "]"}], "]"}], "*", 
+     RowBox[{"u", "[", "x", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"vals", ",", "fns"}], "}"}], "=", 
+   RowBox[{"NDEigensystem", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"H1", ",", 
+       RowBox[{"DirichletCondition", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"u", "[", "x", "]"}], "==", "0"}], ",", "True"}], "]"}]}], 
+      "}"}], ",", 
+     RowBox[{"u", "[", "x", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{
+        RowBox[{"-", "L"}], "/", "2"}], ",", 
+       RowBox[{"L", "/", "2"}]}], "}"}], ",", "total", ",", 
+     RowBox[{"Method", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"\"\<PDEDiscretization\>\"", "->", 
+         RowBox[{"{", 
+          RowBox[{"\"\<FiniteElement\>\"", ",", 
+           RowBox[{"\"\<MeshOptions\>\"", "->", 
+            RowBox[{"{", 
+             RowBox[{"\"\<MaxCellMeasure\>\"", "->", "dx"}], "}"}]}]}], 
+          "}"}]}], ",", "\"\<Arnoldi\>\"", ",", 
+        RowBox[{"\"\<MaxIterations\>\"", "->", "15000"}], ",", 
+        RowBox[{"\"\<BasisSize\>\"", "->", 
+         RowBox[{"total", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Shift\>\"", "->", "3.2"}]}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<valsL300dxp01g2p1.wl\>\"", ",", "vals"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<vecsL300dxp01g2p1.wl\>\"", ",", "fns"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.9604548472558804`*^9, 3.960454888039037*^9}, {
+  3.9605398537502213`*^9, 3.960539866391095*^9}, {3.960903447122731*^9, 
+  3.960903469800782*^9}},
+ CellLabel->"In[17]:=",ExpressionUUID->"b6285aa6-19e6-43b3-b9fa-4ee4f8bd6adb"],
+
+Cell[BoxData["$Aborted"], "Output",
+ CellChangeTimes->{3.960539879853533*^9},
+ CellLabel->
+  "Out[126]=",ExpressionUUID->"ce52c2ec-9084-4f11-95e5-b753c4f7b3a9"],
+
+Cell[BoxData["\<\"valsL200dxp01g2p1.wl\"\>"], "Output",
+ CellChangeTimes->{3.960539879889492*^9},
+ CellLabel->
+  "Out[127]=",ExpressionUUID->"7ac1ed8b-f1a0-4b13-b78c-a06eab8bd4c3"]
+}, Open  ]]
+},
+WindowSize->{606, 525},
+WindowMargins->{{264, Automatic}, {Automatic, 30}},
+FrontEndVersion->"14.0 for Linux x86 (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"cd93b497-0c68-4426-86c7-1a4ab4493130"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[400, 13, 3062, 85, 297, "Input",ExpressionUUID->"d054d26e-48ce-4934-9c7b-912dbc36c5af"],
+Cell[3465, 100, 2430, 62, 310, "Input",ExpressionUUID->"a1292c6f-9cae-4929-ae04-b93eacda89c3"],
+Cell[CellGroupData[{
+Cell[5920, 166, 4594, 133, 557, "Input",ExpressionUUID->"a2c8b4ab-6daf-449a-a46c-126424b84552"],
+Cell[10517, 301, 10097, 157, 141, "Message",ExpressionUUID->"af45a921-50b5-40d2-a04e-2842adf01de0"],
+Cell[20617, 460, 176, 2, 33, "Output",ExpressionUUID->"5fefd8bc-73f1-4851-a873-b97cc12a803c"],
+Cell[20796, 464, 176, 2, 33, "Output",ExpressionUUID->"b6435d8d-54d5-4c7a-b2e2-3f3b691e3697"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[21009, 471, 4593, 133, 557, "Input",ExpressionUUID->"9247b355-0987-4903-8c0a-baf1ec25ce2f"],
+Cell[25605, 606, 10098, 157, 141, "Message",ExpressionUUID->"4c11b2e3-ca9e-49e5-8942-8b1562da78c9"],
+Cell[35706, 765, 176, 2, 33, "Output",ExpressionUUID->"29536ca5-28ac-40b1-aaa4-1e54383da1c7"],
+Cell[35885, 769, 178, 2, 33, "Output",ExpressionUUID->"33898e0e-df9b-46c5-8acb-cc779d1254d3"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[36100, 776, 4706, 136, 600, "Input",ExpressionUUID->"7767e906-0ae1-4fe2-8dc7-74c5a6172517"],
+Cell[40809, 914, 10147, 158, 141, "Message",ExpressionUUID->"63899a88-4fd4-4f1c-89df-17e2c4dcf339"],
+Cell[50959, 1074, 225, 3, 33, "Output",ExpressionUUID->"0727332b-9006-4514-8589-a5fcf4b0c619"],
+Cell[51187, 1079, 225, 3, 33, "Output",ExpressionUUID->"22752964-2c25-4b72-91d6-b75079858cf8"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[51449, 1087, 4657, 135, 600, "Input",ExpressionUUID->"f3ae494a-c57c-4016-b177-9510fdecbfeb"],
+Cell[56109, 1224, 10122, 157, 141, "Message",ExpressionUUID->"976e1f73-723f-4215-acd7-dd95e9199133"],
+Cell[66234, 1383, 198, 2, 33, "Output",ExpressionUUID->"41aef6f2-315b-4d1e-adba-2af69e23a7ee"],
+Cell[66435, 1387, 198, 2, 33, "Output",ExpressionUUID->"4ffb0436-5ba8-4083-a348-e227e647d794"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[66670, 1394, 4659, 135, 600, "Input",ExpressionUUID->"f22f85d2-d115-430d-af34-27c32859374a"],
+Cell[71332, 1531, 10124, 157, 141, "Message",ExpressionUUID->"dfcb4199-4656-4f04-b05c-d5448749be9c"],
+Cell[81459, 1690, 197, 2, 33, "Output",ExpressionUUID->"7afd1efd-0441-4713-825c-8fc2d7fc7a9d"],
+Cell[81659, 1694, 200, 2, 33, "Output",ExpressionUUID->"16d2e915-4373-4156-b8ef-dc614dd1cfc4"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[81896, 1701, 4775, 137, 600, "Input",ExpressionUUID->"3a3b47be-190c-45aa-9d94-c2f16ccadd6f"],
+Cell[86674, 1840, 738, 14, 110, "Message",ExpressionUUID->"283651a6-4484-4fe4-a123-279f8de04992"],
+Cell[87415, 1856, 10101, 157, 141, "Message",ExpressionUUID->"fcfa55ee-7b9c-4aca-a4dd-7d072b78e66b"],
+Cell[97519, 2015, 233, 3, 33, "Output",ExpressionUUID->"ad3d9603-8d4d-42a8-8b13-553b95ccbe4f"],
+Cell[97755, 2020, 236, 3, 33, "Output",ExpressionUUID->"836c612c-377b-40fa-923b-8847117368d9"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[98028, 2028, 4732, 136, 600, "Input",ExpressionUUID->"d7fc597f-2d05-441e-a8f8-15392dffe285"],
+Cell[102763, 2166, 10122, 157, 141, "Message",ExpressionUUID->"b0ff9074-86d3-4ac0-8b93-b72fbf8df864"],
+Cell[112888, 2325, 198, 2, 33, "Output",ExpressionUUID->"0d95e37e-519d-4868-a00c-077b015ce83d"],
+Cell[113089, 2329, 200, 2, 33, "Output",ExpressionUUID->"cac18bc2-55dc-4d3a-a7cf-d55f9741f3cb"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[113326, 2336, 4729, 136, 600, "Input",ExpressionUUID->"04062bec-790a-433e-b5b5-1ea0e0e9804f"],
+Cell[118058, 2474, 10098, 157, 141, "Message",ExpressionUUID->"97e37c8f-dfa0-4f39-84a4-d42c4b8cf10f"],
+Cell[128159, 2633, 223, 3, 33, "Output",ExpressionUUID->"100c0dbf-06e4-4b78-8946-dd13e95bea25"],
+Cell[128385, 2638, 223, 3, 33, "Output",ExpressionUUID->"2490b5b8-80bc-4b30-afba-cf987b611a75"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[128645, 2646, 4710, 136, 600, "Input",ExpressionUUID->"b6285aa6-19e6-43b3-b9fa-4ee4f8bd6adb"],
+Cell[133358, 2784, 160, 3, 33, "Output",ExpressionUUID->"ce52c2ec-9084-4f11-95e5-b753c4f7b3a9"],
+Cell[133521, 2789, 180, 3, 33, "Output",ExpressionUUID->"7ac1ed8b-f1a0-4b13-b78c-a06eab8bd4c3"]
+}, Open  ]]
+}
+]
+*)
+
